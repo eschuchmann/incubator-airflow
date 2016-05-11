@@ -486,7 +486,7 @@ class SchedulerJob(BaseJob):
         pickle_id = None
         if self.do_pickle and self.executor.__class__ not in (
                 executors.LocalExecutor, executors.SequentialExecutor):
-            pickle_id = dag.pickle(session).id
+            pickle_id = dag.pickle(session=session).id
 
         db_dag = session.query(DagModel).filter_by(dag_id=dag.dag_id).first()
         last_scheduler_run = db_dag.last_scheduler_run or datetime(2000, 1, 1)
@@ -636,7 +636,7 @@ class SchedulerJob(BaseJob):
                         executors.LocalExecutor,
                         executors.SequentialExecutor):
                     self.logger.info("Pickling DAG {}".format(dag))
-                    pickle_id = dag.pickle(session).id
+                    pickle_id = dag.pickle(session=session).id
 
                 if dag.dag_id in dag_blacklist:
                     continue
